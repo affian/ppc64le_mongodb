@@ -12,13 +12,14 @@ const http = require('http');
 //const mongoPassword = process.env.database_password;
 
 // Collect database settings from environment variables
-const mongoHost = "mongodb-arm64";
+const mongoHost = process.env.MONGO_HOST_IP;
 const mongoPort = "27017";
 const mongoDatabase = process.env.MONGO_DB_NAME;
 const mongoAdminDatabase = "admin";
 const mongoCollection = process.env.MONGO_COLLECTION_NAME;
 const mongoUser = process.env.MONGO_INITDB_ROOT_USERNAME;
 const mongoPassword = process.env.MONGO_INITDB_ROOT_PASSWORD;
+
 
 //const mongoHost = "mongodb-arm64";
 //const mongoPort = "27017";
@@ -27,10 +28,11 @@ const mongoPassword = process.env.MONGO_INITDB_ROOT_PASSWORD;
 //const mongoCollection = "chicago_listings";
 //const mongoUser = "root";
 //const mongoPassword = "abc123";
+
 // Build MongoDB connection string
 //================================
 // Used for OpenShift environment
-var url = "mongodb://" + mongoUser + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort + "/" + mongoAdminDatabase
+var url = "mongodb://" + mongoHost + ":" + mongoPort + "/" + mongoDatabase
 // Used for local testing
 // var url = "mongodb://localhost:27017/airbnb"
 console.log("MongoDB instance is at: " + url)
