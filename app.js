@@ -45,6 +45,9 @@ const hostname = "0.0.0.0";
 // Function to clean up the entries from a HTTP query (destringify)
 function destringify(query) {
     if (query.id) query.id = parseInt(query.id);
+    if (query.beds) query.beds = parseInt(query.beds);
+    if (query.bedrooms) query.bedrooms = parseInt(query.bedrooms);
+    if (query.host_id) query.host_id = parseInt(query.host_id);
     if (query.accommodates) query.accommodates = parseInt(query.accommodates);
     if (query.coresPerSocket) query.coresPerSocket = parseInt(query.coresPerSocket);
     if (query.totalCores) query.totalCores = parseInt(query.totalCores);
