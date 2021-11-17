@@ -75,7 +75,7 @@ app.get('/findall', (req, res) => {
             console.log(mongoCollection);
             findQuery = destringify(findQuery);
             console.log("Query is: " + JSON.stringify(findQuery));
-            result = await collection.find(findQuery).toArray();
+            result = await collection.find(findQuery).limit(10).toArray();
             console.log("Search completed");
         } finally {
             await client.close();
@@ -87,6 +87,36 @@ app.get('/findall', (req, res) => {
     }
     findall(req.query).catch(console.dir);
 })
+
+// findListings selects a few columns (id, host_id, beds, bedrooms, accommodates)
+// from the collection to display on the php frontent as opposed to pulling all columns from all listigs.
+app.get('/findListings', (req, res) => {
+    const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true});
+    console.log("Connected");
+    async function findListings(findColumns) {
+        var result = ""
+        try {
+            await client.connect();
+            console.log("Connected to DB:");
+            console.log(mongoDatabase);
+            const collection = client.db(mongoDatabase).collection(mongoCollection);
+            console.log("Using collection:");
+            console.log(mongoCollection);
+            findColumns = destringify(findColumns);
+            console.log("Query is: " + JSON.stringify(findColumns));
+            result = await collection.find({}).project({_id: 0, id: 1, host_id: 1, beds: 1, bedrooms: 1, accommodates: 1}).toArray();
+            console.log("Search Completed");
+        } finally {
+            await client.close();
+            console.log("Client closed.");
+        }
+        console.log("returning result:");
+        console.log(result);
+        res.send(result);
+    }
+    findListings(req.query).catch(console.dir);
+})
+
 
 // Healthcheck on /healthz
 app.get('/healthz', (req, res) => {
