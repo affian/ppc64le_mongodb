@@ -75,7 +75,7 @@ app.get('/findall', (req, res) => {
             console.log(mongoCollection);
             findQuery = destringify(findQuery);
             console.log("Query is: " + JSON.stringify(findQuery));
-            result = await collection.find(findQuery).limit(10).toArray();
+            result = await collection.find(findQuery).toArray();
             console.log("Search completed");
         } finally {
             await client.close();
