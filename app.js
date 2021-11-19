@@ -117,7 +117,7 @@ app.get('/findId', (req, res) => {
 })
 
 
-// findListings selects a few columns (id, host_id, beds, bedrooms, accommodates)
+// findListings selects a few columns that briefly describe the listing on the table
 // from the collection to display on the php frontent as opposed to pulling all columns from all listigs.
 app.get('/findListings', (req, res) => {
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -133,7 +133,7 @@ app.get('/findListings', (req, res) => {
             console.log(mongoCollection);
             findColumns = destringify(findColumns);
             console.log("Query is: " + JSON.stringify(findColumns));
-            result = await collection.find({}).project({_id: 0, id: 1, host_id: 1, beds: 1, bedrooms: 1, accommodates: 1}).toArray();
+            result = await collection.find(findColumns).project({_id: 0, name: 1, neighbourhood_cleansed: 1, host_name: 1, accommodates: 1}).limit(100).toArray();
             console.log("Search Completed");
         } finally {
             await client.close();
