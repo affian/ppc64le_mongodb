@@ -88,6 +88,35 @@ app.get('/findall', (req, res) => {
     findall(req.query).catch(console.dir);
 })
 
+// trying a /findId endpoint to retrieve just the ID field
+app.get('/findId', (req, res) => {
+    const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("connection created");
+    async function findId(listingId) {
+        var result = ""
+        try {
+            await client.connect();
+            console.log("Connected to DB:");
+            console.log(mongoDatabase);
+            const collection = client.db(mongoDatabase).collection(mongoCollection);
+            console.log("Using collection:");
+            console.log(mongoCollection);
+            listingId = destringify(listingId);
+            console.log("Query is: " + JSON.stringify(listingId));
+            result = await collection.find(listingId).project({_id: 0, id: 1}).limit(10).toArray();
+            console.log("Search completed");
+        } finally {
+            await client.close();
+            console.log("client closed");
+        }
+        console.log("returning result:");
+        console.log(result);
+        res.send(result);
+   }
+   findId(req.query).catch(console.dir);
+})
+
+
 // findListings selects a few columns (id, host_id, beds, bedrooms, accommodates)
 // from the collection to display on the php frontent as opposed to pulling all columns from all listigs.
 app.get('/findListings', (req, res) => {
