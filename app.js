@@ -103,7 +103,7 @@ app.get('/findId', (req, res) => {
             console.log(mongoCollection);
             listingId = destringify(listingId);
             console.log("Query is: " + JSON.stringify(listingId));
-            result = await collection.find(listingId).project({_id: 0, id: 1}).limit(10).toArray();
+            result = await collection.find(listingId).project({_id: 0, id: 1, host_id: 1}).limit(100).toArray();
             console.log("Search completed");
         } finally {
             await client.close();
