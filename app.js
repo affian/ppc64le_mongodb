@@ -133,7 +133,7 @@ app.get('/findListings', (req, res) => {
             console.log(mongoCollection);
             findColumns = destringify(findColumns);
             console.log("Query is: " + JSON.stringify(findColumns));
-            result = await collection.find(findColumns).project({_id: 0, id: 1, name: 1, neighbourhood_cleansed: 1, host_name: 1, accommodates: 1}).toArray();
+            result = await collection.find(findColumns).project({_id: 0, id: 1, name: 1, neighbourhood_cleansed: 1, accommodates: 1, price: 1}).toArray();
             console.log("Search Completed");
         } finally {
             await client.close();
