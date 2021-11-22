@@ -88,11 +88,11 @@ app.get('/findall', (req, res) => {
     findall(req.query).catch(console.dir);
 })
 
-// trying a /findId endpoint to retrieve just the ID field
-app.get('/findId', (req, res) => {
+// trying a /findListingInfo to render more information on a single listing's page
+app.get('/findListingInfo', (req, res) => {
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("connection created");
-    async function findId(listingId) {
+    async function findListingInfo(listingInfo) {
         var result = ""
         try {
             await client.connect();
@@ -101,9 +101,9 @@ app.get('/findId', (req, res) => {
             const collection = client.db(mongoDatabase).collection(mongoCollection);
             console.log("Using collection:");
             console.log(mongoCollection);
-            listingId = destringify(listingId);
-            console.log("Query is: " + JSON.stringify(listingId));
-            result = await collection.find(listingId).project({_id: 0, id: 1, host_id: 1}).toArray();
+            listingInfo = destringify(listingInfo);
+            console.log("Query is: " + JSON.stringify(listingInfo));
+            result = await collection.find(listingInfo).project({_id: 0, id: 1, name: 1, description: 1, neighborhood_overview: 1, property_type: 1, bathrooms_text: 1, bedrooms: 1, beds: 1, price: 1, review_scores_value: 1, host_name: 1, host_since: 1, host_about: 1, host_response_rate: 1}).toArray();
             console.log("Search completed");
         } finally {
             await client.close();
@@ -113,12 +113,11 @@ app.get('/findId', (req, res) => {
         console.log(result);
         res.send(result);
    }
-   findId(req.query).catch(console.dir);
+   findListingInfo(req.query).catch(console.dir);
 })
 
 
 // findListings selects a few columns that briefly describe the listing on the table
-// from the collection to display on the php frontent as opposed to pulling all columns from all listigs.
 app.get('/findListings', (req, res) => {
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true});
     console.log("Connected");
